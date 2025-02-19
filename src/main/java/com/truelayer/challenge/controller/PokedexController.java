@@ -18,12 +18,9 @@ public class PokedexController {
         this.pokedexService = pokedexService;
     }
 
-    @GetMapping("/{pokemonId}")
-    public PokemonDTO getPokemonById(@PathVariable Long pokemonId) {
-        return PokemonDTO.builder()
-                .name("Pikachu")
-                .id(25L)
-                .build();
+    @GetMapping("/{name}")
+    public PokemonDTO getPokemonById(@PathVariable String name) {
+        return pokedexService.getPokemon(name);
     }
 
 }
