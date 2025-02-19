@@ -11,4 +11,10 @@ public class PokemonDTO {
 
     String name;
 
+    String habitat;
+
+    String description;
+
+    boolean isLegendary;
+
 }
