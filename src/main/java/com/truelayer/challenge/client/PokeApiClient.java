@@ -5,6 +5,6 @@ import reactor.core.publisher.Mono;
 
 public interface PokeApiClient {
 
-    Mono<PokeApiResponse> getPokemon(String pokemonName);
+    PokeApiResponse getPokemon(String pokemonName);
 
 }
