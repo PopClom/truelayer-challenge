@@ -6,4 +6,6 @@ public interface PokedexService {
 
     PokemonDTO getPokemon(String pokemonName);
 
+    PokemonDTO getTranslatedPokemon(String pokemonName);
+
 }
