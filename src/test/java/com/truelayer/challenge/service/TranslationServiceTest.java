@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class TranslationServiceImplTest {
+class TranslationServiceTest {
 
     @InjectMocks
     private TranslationServiceImpl translationService;
