@@ -2,6 +2,25 @@
 
 Pokedex with fun translations.
 
+## Production Considerations
+
+For a production-ready system, I would implement the following improvements:
+
+- **Retry Logic**:
+   - If external API calls fail due to transient issues, we should retry with exponential backoff to improve resilience.
+
+- **Non-blocking Calls**:
+   - The current implementation uses blocking calls, which can limit scalability.
+
+- **Caching**:
+   - API responses rarely change, so caching can reduce API calls and improve performance.
+
+- **Unit Tests**:
+   - Add unit tests for the controller and API clients.
+
+- **Rate Limiting**:
+   - Protect external API usage with rate limiting (e.g. API Gateway).
+
 ## Prerequisites
 
 Before running the application, make sure you have the following installed on your system:
@@ -29,78 +48,12 @@ Follow the steps below to run the Spring Boot application:
 3. **Run the Application**: After building the application, you can run it using the following command:
 
     ```bash
-    java -jar target/truelayer-challenge-0.0.1-SNAPSHOT.jar
+    java -jar target/challenge-0.0.1-SNAPSHOT.jar
     ```
 
 4. **Access the Application**: Once the application is up and running, you can access it in your web browser or using tools like cURL or Postman. The application will be available at `http://localhost:8080`.
 
-
 ## Endpoints
-
-### Get Product
-
-Get a product by ID:
-
-```bash
-curl http://localhost:8080/products/{product_id}
-```
-
-For example:
-
-```bash
-curl http://localhost:8080/products/1
-```
-
-Example response:
-
-```json
-{
-   "id": 1,
-   "name": "Smartphone",
-   "price": 500.00,
-   "quantity": 10
-}
-```
-
-Example not found error response:
-
-```json
-{
-   "status": 404,
-   "error": "Product not found with ID: 1"
-}
-```
-
-### Post Product
-
-Create a product:
-
-```bash
-curl -X POST http://localhost:8080/products \
-  -H 'Content-Type: application/json' \
-  -d 'create_body'
-```
-
-For example:
-
-```bash
-curl -X POST http://localhost:8080/products \
-  -H 'Content-Type: application/json' \
-  -d '{"name":"Smartphone", "price": 500.0, "quantity": 10}'
-```
-
-Example validation error response:
-
-```json
-{
-   "status": 400,
-   "error": "Validation error",
-   "messages": [
-      "Invalid -1 value for price",
-      "Invalid null value for quantity"
-   ]
-}
-```
 
 ### Get Pokemon
 
