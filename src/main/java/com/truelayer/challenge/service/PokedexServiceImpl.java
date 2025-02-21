@@ -1,7 +1,6 @@
 package com.truelayer.challenge.service;
 
 import com.truelayer.challenge.client.PokeApiClient;
-import com.truelayer.challenge.client.TranslationClient;
 import com.truelayer.challenge.dto.PokeApiResponse;
 import com.truelayer.challenge.dto.PokemonDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +13,9 @@ public class PokedexServiceImpl implements PokedexService {
     PokeApiClient pokeApiClient;
 
     @Autowired
-    TranslationClient translationClient;
+    TranslationService translationService;
 
     private static final String LANGUAGE_EN = "en";
-
-    private static final String CAVE_HABITAT = "cave";
 
     public PokemonDTO getPokemon(String pokemonName) {
         PokeApiResponse response = pokeApiClient.getPokemon(pokemonName);
@@ -33,23 +30,8 @@ public class PokedexServiceImpl implements PokedexService {
     }
 
     public PokemonDTO getTranslatedPokemon(String pokemonName) {
-        PokeApiResponse response = pokeApiClient.getPokemon(pokemonName);
-        String description = extractDescription(response);
-        String habitat = response.getHabitat() != null ? response.getHabitat().getName() : null;
-
-        if (CAVE_HABITAT.equals(habitat) || response.isLegendary()) {
-            description = translationClient.yodaTranslation(description).getContents().getTranslated();
-        } else {
-            description = translationClient.shakespeareTranslation(description).getContents().getTranslated();
-        }
-
-        return PokemonDTO.builder()
-                .id(response.getId())
-                .name(response.getName())
-                .description(description)
-                .habitat(habitat)
-                .isLegendary(response.isLegendary())
-                .build();
+        PokemonDTO pokemon = getPokemon(pokemonName);
+        return translationService.translate(pokemon);
     }
 
     private String extractDescription(PokeApiResponse response) {

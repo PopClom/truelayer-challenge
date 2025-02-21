@@ -23,6 +23,9 @@ public class PokedexServiceTest {
     @Mock
     private PokeApiClient pokeApiClient;
 
+    @Mock
+    private TranslationService translationService;
+
     @InjectMocks
     private PokedexServiceImpl pokedexService;
 
@@ -89,6 +92,30 @@ public class PokedexServiceTest {
 
         assertNotNull(result);
         assertNull(result.getDescription());
+    }
+
+    @Test
+    void testGetTranslatedPokemon_Success() {
+        String pokemonName = "Stunfisk";
+        String translatedDescription = "Translated description";
+        when(pokeApiClient.getPokemon(pokemonName)).thenReturn(pokeApiResponse);
+        doAnswer(invocation -> {
+            PokemonDTO inputPokemon = invocation.getArgument(0);
+            return inputPokemon.toBuilder().description(translatedDescription).build();
+        }).when(translationService).translate(any(PokemonDTO.class));
+
+        PokemonDTO result = pokedexService.getTranslatedPokemon(pokemonName);
+
+        assertNotNull(result);
+        assertEquals(translatedDescription, result.getDescription());
+    }
+
+    @Test
+    void testGetTranslatedPokemon_PokemonNotFound() {
+        String pokemonName = "NonExistentPokemon";
+        when(pokeApiClient.getPokemon(pokemonName)).thenThrow(new PokemonNotFound("Pokemon not found"));
+
+        assertThrows(PokemonNotFound.class, () -> pokedexService.getTranslatedPokemon(pokemonName));
     }
 
 }
