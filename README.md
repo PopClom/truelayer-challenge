@@ -1,6 +1,6 @@
 # TrueLayer Challenge
 
-ToDo
+Pokedex with fun translations.
 
 ## Prerequisites
 
@@ -37,4 +37,91 @@ Follow the steps below to run the Spring Boot application:
 
 ## Endpoints
 
-ToDo
+### Get Product
+
+Get a product by ID:
+
+```bash
+curl http://localhost:8080/products/{product_id}
+```
+
+For example:
+
+```bash
+curl http://localhost:8080/products/1
+```
+
+Example response:
+
+```json
+{
+   "id": 1,
+   "name": "Smartphone",
+   "price": 500.00,
+   "quantity": 10
+}
+```
+
+Example not found error response:
+
+```json
+{
+   "status": 404,
+   "error": "Product not found with ID: 1"
+}
+```
+
+### Post Product
+
+Create a product:
+
+```bash
+curl -X POST http://localhost:8080/products \
+  -H 'Content-Type: application/json' \
+  -d 'create_body'
+```
+
+For example:
+
+```bash
+curl -X POST http://localhost:8080/products \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"Smartphone", "price": 500.0, "quantity": 10}'
+```
+
+Example validation error response:
+
+```json
+{
+   "status": 400,
+   "error": "Validation error",
+   "messages": [
+      "Invalid -1 value for price",
+      "Invalid null value for quantity"
+   ]
+}
+```
+
+### Get Pokemon
+
+```bash
+curl http://localhost:8080/pokemon/{pokemon_name}
+```
+
+For example:
+
+```bash
+curl http://localhost:8080/pokemon/stunfisk
+```
+
+### Get Translated Pokemon
+
+```bash
+curl http://localhost:8080/pokemon/translated/{pokemon_name}
+```
+
+For example:
+
+```bash
+curl http://localhost:8080/pokemon/translated/stunfisk
+```

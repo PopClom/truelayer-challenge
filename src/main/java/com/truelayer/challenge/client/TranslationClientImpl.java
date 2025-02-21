@@ -7,9 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-@Slf4j
 @Service
 public class TranslationClientImpl implements TranslationClient {
 
@@ -26,7 +24,6 @@ public class TranslationClientImpl implements TranslationClient {
                 .body(BodyInserters.fromFormData("text", text))
                 .retrieve()
                 .bodyToMono(TranslationResponse.class)
-                .onErrorResume(e -> handleTranslationError(e, text))
                 .block();
     }
 
@@ -37,18 +34,7 @@ public class TranslationClientImpl implements TranslationClient {
                 .body(BodyInserters.fromFormData("text", text))
                 .retrieve()
                 .bodyToMono(TranslationResponse.class)
-                .onErrorResume(e -> handleTranslationError(e, text))
                 .block();
-    }
-
-    private Mono<TranslationResponse> handleTranslationError(Throwable e, String originalText) {
-        log.error("Translation failed: ", e);
-
-        return Mono.just(TranslationResponse.builder()
-                .contents(TranslationResponse.Contents.builder()
-                        .translated(originalText)
-                        .build())
-                .build());
     }
 
 }
